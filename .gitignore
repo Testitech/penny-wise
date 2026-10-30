@@ -1,0 +1,16 @@
+node_modules/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+.env*
+!.env.example
+npm-debug.log*
+
+# Local design tooling and generated inspection captures
+.agents/skills/
+.preview-inspection/
+.taste-skill/
+.impeccable/critique/
+.impeccable/live/
+notion/
