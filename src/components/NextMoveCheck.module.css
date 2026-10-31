@@ -1,6 +1,6 @@
 .page {
   --check-panel-border: #e6e6e6;
-  --check-danger-surface: #f4bac3;
+  --check-danger-surface: oklch(94.1% 0.03 12.58);
   --check-danger-ink: #64232e;
   min-height: 100vh;
   background: var(--surface);
@@ -218,12 +218,12 @@
 .dangerButton {
   background: var(--check-danger-surface);
   color: var(--check-danger-ink);
-  border-color: #e9a3ae;
+  border-color: oklch(88% 0.05 12.58);
   font-weight: 700;
 }
 
 .dangerButton:hover {
-  background: #eda4b0;
+  background: oklch(90% 0.04 12.58);
 }
 
 .costRow .dangerButton {

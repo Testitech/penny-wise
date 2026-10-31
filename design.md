@@ -152,3 +152,5 @@ The middle loses redundant subtitles and a repeated primary button. Missing and 
 The separate `/next-move-check` feature follows `docs/features/next-move-check.md` for product behavior. It uses the established Schibsted type and navy/paper palette, with round white form panels, capsule controls, and a navy result panel to give the estimate clear visual priority. Inputs have a restrained navy focus indicator. The cost-removal action is a bold, dark-red label on a light red surface; clear and reset actions have distinct neutral/navy treatments. Result color does not carry the financial meaning alone.
 
 On the landing page, the middle navigation links sit in a complete navy pill separated from the rounded Hero. The Hero's Next Move Check link and the check page's return link read as outlined capsule actions without underlines. The landing page's fictional USD example remains separate from the user-entered NGN check.
+
+The landing page uses a wider 1800px cap and fluid desktop side padding so laptop displays do not acquire large empty gutters. The cost-removal pill uses a pale red `oklch(94.1% 0.03 12.58)` surface with dark red text.
