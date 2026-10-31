@@ -146,3 +146,9 @@ Reference mappings: sculpted navy navigation and rounded split Hero -> Pennywise
 The approved reference layout and six generated illustrations remain. The previous critique's three priority issues are resolved: the money-plan entry targets the control's region, with a nearby remaining figure on smaller screens and enough preceding context on desktop; the signup actions explicitly identify a waitlist demonstration; the explanation rows teach the example's balance, commitments and repair calculation rather than repeating the benefit cards.
 
 The middle loses redundant subtitles and a repeated primary button. Missing and malformed email errors give distinct recovery instructions. Tablet decision tiles reflow into three readable columns and the financial summaries use horizontal cards; phone illustration heights are reduced without cropping. The complete example, optional expense toggle, keyboard disclosures, privacy behavior and every original visual asset remain available.
+
+## Next Move Check and navigation refinement
+
+The separate `/next-move-check` feature follows `docs/features/next-move-check.md` for product behavior. It uses the established Schibsted type and navy/paper palette, with round white form panels, capsule controls, and a navy result panel to give the estimate clear visual priority. Inputs have a restrained navy focus indicator. The cost-removal action is a bold, dark-red label on a light red surface; clear and reset actions have distinct neutral/navy treatments. Result color does not carry the financial meaning alone.
+
+On the landing page, the middle navigation links sit in a complete navy pill separated from the rounded Hero. The Hero's Next Move Check link and the check page's return link read as outlined capsule actions without underlines. The landing page's fictional USD example remains separate from the user-entered NGN check.

@@ -4,9 +4,13 @@
 
 Proactively complete actions within the user's approved scope, including implementation, logic checks, verification, testing, debugging, and necessary follow-through. Do not stop merely to offer work you can already perform. Pause only for a real blocker, required permission, or an explicit user-requested approval or review checkpoint.
 
+## Working Philosophy and Product Ownership
+
+The user owns product decisions. Build in small iterations: make the simplest genuinely useful version, inspect it, learn, and improve it. Start from a specific feature and its user journey, not an application shell or empty screens. Establish functionality, hierarchy, spacing, and usability before decorative polish, while keeping the interface at a credible quality bar. Reuse established components and conventions; introduce shared patterns only when repetition justifies them. For significant product or architectural decisions, explain trade-offs and discuss them with the user before implementation. Preserve approved specifications and design decisions, and challenge unclear requirements instead of inventing scope. These principles are drawn from the user's stated approach to building in public and Refactoring UI; they do not grant permission to publish or share work externally.
+
 ## Project Status & Scope
 
-Pennywise is a Next.js, TypeScript, and Tailwind CSS landing page for a fictional personal finance app aimed at young adults. Its primary goal is waitlist interest. The page includes a working financial example and a frontend-only waitlist demonstration. No automated testing framework is configured.
+Pennywise is a Next.js, TypeScript, and Tailwind CSS landing page for a personal finance concept aimed at young adults. Its primary landing-page goal is waitlist interest. The page includes a fictional financial example and a frontend-only waitlist demonstration. The separate Next Move Check is specified in `docs/features/next-move-check.md`.
 
 ## Project Structure & Module Organization
 
@@ -20,6 +24,8 @@ Use the scripts defined in package.json:
 - `npm run build`: generate and validate the production build.
 - `npm run start`: serve the production build locally.
 - `npm run lint`: run the configured ESLint checks.
+- `npm run test:calc`: run pure Next Move Check calculation tests.
+- `npm run test:ui`: run Next Move Check browser interaction tests (after `npx playwright install chromium --no-shell`).
 
 Use npm, matching package-lock.json. Add test commands only when their tooling exists.
 
@@ -37,12 +43,14 @@ Use two-space indentation, TypeScript types for component props, and PascalCase 
 
 ## Testing Guidelines
 
-No testing framework or coverage threshold is configured. Verify responsive layouts, keyboard navigation, form validation, and the demonstration success state. Run lint and production build checks once available. If automated tests are added, use `*.test.tsx` for component tests and `*.spec.ts` for browser scenarios; document their runner and commands.
+Node's test runner with `tsx` covers pure calculations; Playwright covers browser interactions. No coverage threshold is configured. Verify responsive layouts, keyboard navigation, form validation, and the demonstration success state. Run lint and production build checks. Colocate pure `*.test.ts` files with their source; reserve `tests/*.spec.ts` for browser scenarios.
 
 ## Commit & Pull Request Guidelines
 
 There is no Git history establishing a convention. Use concise, imperative commit messages, such as `Add responsive dashboard preview`. Pull requests should describe the change, validation performed, and any limitations. Link relevant issues and include desktop and mobile screenshots for visual changes.
 
+Do not commit, push, or create a pull request without the user's explicit approval for that action. Treat approval as specific to the request in which it was given.
+
 ## Data & Privacy
 
-Use fictional financial data only. The waitlist is a frontend demonstration: do not transmit or persist email addresses, connect a backend, or request financial information. Clearly communicate the demonstration behavior.
+Use fictional financial data for the landing-page demo. Next Move Check accepts user-entered NGN estimates in local page state only; do not transmit or persist those figures. The waitlist is a frontend demonstration: do not transmit or persist email addresses or connect a backend. Clearly communicate each demonstration's behavior.

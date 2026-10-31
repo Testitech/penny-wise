@@ -6,15 +6,20 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint src --max-warnings=0"
+    "lint": "eslint src tests playwright.config.ts --max-warnings=0",
+    "test:calc": "node --import tsx --test src/lib/next-move-check.test.ts",
+    "test:ui": "playwright test"
   },
-  "engines": { "node": ">=20.9.0" },
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "dependencies": {
     "next": "16.4.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@playwright/test": "1.51.1",
     "@tailwindcss/postcss": "4.3.3",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
@@ -22,6 +27,7 @@
     "eslint": "^9.0.0",
     "eslint-config-next": "16.4.3",
     "tailwindcss": "4.3.3",
+    "tsx": "4.20.3",
     "typescript": "^5.0.0"
   }
 }

@@ -20,16 +20,16 @@ Bring current balance and upcoming commitments into one understandable plan. Dem
 
 ## Operating Context
 
-The current experience is a responsive public landing page. Visitors can read the product explanation, explore a local money-plan example, inspect spending and habit summaries, expand explanations, and try the waitlist form. It is not an authenticated finance application.
+The current experience is a responsive public landing page and a session-only Next Move Check at `/next-move-check`. Visitors can explore the fictional money-plan example and waitlist demonstration, then enter their own estimates in the separate NGN check. It is not an authenticated finance application.
 
 ## Capabilities and Constraints
 
-- All financial data, dates, and habit progress are fictional. The example uses USD; this does not establish a target country or launch currency.
+- Landing-page financial data, dates, and habit progress are fictional and use USD. Next Move Check accepts user-entered whole-naira NGN estimates locally; its approved behavior is defined in `docs/features/next-move-check.md`.
 - Default example: $1,240 balance minus $640 commitments leaves $600 after those commitments. Including an $80 bike repair changes commitments to $720 and remaining money to $520. These are demonstration values, not actual user finances or a complete forecast.
 - The Hero and expense example share local state. Monetary totals derive from integer minor-unit values in src/data/money-plan.ts. Past spending is already reflected in the balance and is not subtracted again.
 - The waitlist is a frontend demonstration. Validate the email locally, clear it on success, and explicitly state that no real signup was created. Never transmit or persist email addresses.
-- No backend, bank connection, financial-information request, payments, authentication, or account management is in scope.
-- Pricing, business model, launch date, deployment target, real signup service, and geographic market are undecided. Do not invent them.
+- No backend, bank connection, transmission or persistence of entered figures, payments, authentication, or account management is in scope.
+- Pricing, business model, launch date, deployment target, real signup service, and broader geographic market are undecided. The first check targets Nigerian young adults; do not infer a wider launch plan.
 
 ## Brand Commitments
 
@@ -43,6 +43,7 @@ The user has approved the existing identity, six custom editorial illustrations,
 - Fictional spending and habit data: src/data/spending.ts.
 - Six custom generated illustrations: assets/illustrations/. Inventory and generation provenance: assets/README.md and assets/prompts.md.
 - Local-only form behavior: src/components/WaitlistForm.tsx.
+- Approved Next Move Check behavior: docs/features/next-move-check.md.
 - No verified customers, testimonials, partner logos, customer counts, performance benchmarks, or business metrics. Do not fabricate proof or imply that example data belongs to real users.
 
 ## Product Principles
