@@ -14,6 +14,7 @@ export type CheckErrors = {
   costConfirmation?: string;
   possibleExpense?: string;
   calculation?: string;
+  calculationSource?: "cost-total" | "result";
 };
 
 export type CheckResult = {
@@ -25,6 +26,7 @@ export type CheckResult = {
 };
 
 export type CheckEvaluation = { result: CheckResult | null; errors: CheckErrors };
+export type DraftPreview = { result: CheckResult; draftAmountIncluded: boolean };
 
 const ngnFormatter = new Intl.NumberFormat("en-NG", {
   style: "currency",
@@ -88,6 +90,7 @@ export function evaluateCheck(input: CheckInput): CheckEvaluation {
       const nextTotal = commitments + parsed.value;
       if (!Number.isSafeInteger(nextTotal)) {
         errors.calculation = "The total costs are too large to calculate. Reduce an amount.";
+        errors.calculationSource = "cost-total";
       } else {
         commitments = nextTotal;
       }
@@ -115,11 +118,13 @@ export function evaluateCheck(input: CheckInput): CheckEvaluation {
   const beforeExpense = available.value! - commitments;
   if (!Number.isSafeInteger(beforeExpense)) {
     errors.calculation = "The result is too large to calculate. Reduce an amount.";
+    errors.calculationSource = "result";
     return { result: null, errors };
   }
   const afterExpense = possibleExpense === null ? null : beforeExpense - possibleExpense;
   if (afterExpense !== null && !Number.isSafeInteger(afterExpense)) {
     errors.calculation = "The result is too large to calculate. Reduce an amount.";
+    errors.calculationSource = "result";
     return { result: null, errors };
   }
 
@@ -133,4 +138,24 @@ export function evaluateCheck(input: CheckInput): CheckEvaluation {
     },
     errors,
   };
+}
+
+// A newly added row is a draft until both fields are complete. Show a clearly
+// qualified preview from current valid amounts, without weakening full validation.
+export function evaluateDraftPreview(input: CheckInput, draftCostId: string | null): DraftPreview | null {
+  if (!draftCostId) return null;
+  const draft = input.costs.find((cost) => cost.id === draftCostId);
+  if (!draft || (draft.name.trim() && draft.amount.trim())) return null;
+
+  const amountEntered = draft.amount.trim() !== "";
+  const parsed = amountEntered ? parseNaira(draft.amount, "the cost amount", false) : null;
+  if (parsed?.error) return null;
+
+  const costs = amountEntered
+    ? input.costs.map((cost) => cost.id === draftCostId ? { ...cost, name: cost.name.trim() || "Unfinished cost" } : cost)
+    : input.costs.filter((cost) => cost.id !== draftCostId);
+  if (costs.length === 0) return null;
+
+  const result = evaluateCheck({ ...input, costs, noCostsConfirmed: false }).result;
+  return result ? { result, draftAmountIncluded: amountEntered } : null;
 }

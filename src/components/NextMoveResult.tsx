@@ -1,12 +1,21 @@
 import { describeRemainder, formatNaira, formatSignedNaira, type CheckResult } from "@/lib/next-move-check";
 import styles from "./NextMoveCheck.module.css";
 
-type Props = { result: CheckResult };
+type Props = { result: CheckResult; draftAmountIncluded?: boolean };
 
-export default function NextMoveResult({ result }: Props) {
+export default function NextMoveResult({ result, draftAmountIncluded }: Props) {
+  const isPreview = draftAmountIncluded !== undefined;
   return (
     <section className={styles.result} aria-labelledby="result-title">
       <h2 id="result-title">Your estimate</h2>
+      <p className={styles.resultState}>{isPreview ? "Live estimate · cost in progress" : "Estimate ready"}</p>
+      {isPreview && (
+        <p className={styles.previewNote}>
+          {draftAmountIncluded
+            ? "The new cost amount is included. Add its name to complete this cost."
+            : "The unfinished cost is not included yet. Enter its amount to update this estimate."}
+        </p>
+      )}
       <div className={styles.resultStep}>
         <h3>Before the possible expense</h3>
         <p className={styles.figure}>{describeRemainder(result.beforeExpense)}</p>

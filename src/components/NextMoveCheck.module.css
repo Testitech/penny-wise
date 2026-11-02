@@ -71,14 +71,18 @@
 .columns {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr);
-  gap: 32px;
+  grid-template-areas:
+    "available output"
+    "costs output"
+    "expense output"
+    "reset output";
+  gap: 16px 32px;
   align-items: start;
 }
 
-.inputs {
-  display: grid;
-  gap: 16px;
-}
+.availableBlock { grid-area: available; }
+.costsBlock { grid-area: costs; }
+.expenseBlock { grid-area: expense; }
 
 .block,
 .result,
@@ -258,6 +262,7 @@
 }
 
 .resetButton {
+  grid-area: reset;
   justify-self: start;
   margin-top: 8px;
   padding: 10px 20px;
@@ -270,7 +275,15 @@
 }
 
 .output {
+  grid-area: output;
   min-width: 0;
+  scroll-margin-top: 20px;
+}
+
+.output:focus {
+  outline: 3px solid var(--ink);
+  outline-offset: 4px;
+  border-radius: 24px;
 }
 
 .result,
@@ -289,6 +302,40 @@
 
 .emptyResult > p {
   margin-top: 12px;
+}
+
+.result .resultState,
+.emptyResult .resultState {
+  margin: 6px 0 0;
+  color: var(--ground);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.previewNote {
+  margin-top: 12px;
+  color: #d8ddeb;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.estimateLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin-top: 14px;
+  padding: 9px 18px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.estimateLink:hover {
+  background: var(--surface);
 }
 
 .resultStep {
@@ -343,8 +390,15 @@
 }
 
 @media (max-width: 800px) {
-  .columns { grid-template-columns: 1fr; gap: 24px; }
-  .output { grid-row: 2; }
+  .columns {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "available"
+      "costs"
+      "output"
+      "expense"
+      "reset";
+  }
 }
 
 @media (max-width: 520px) {

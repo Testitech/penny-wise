@@ -3,6 +3,7 @@ import { test } from "node:test";
 import {
   describeRemainder,
   evaluateCheck,
+  evaluateDraftPreview,
   formatNaira,
   formatSignedNaira,
   parseNaira,
@@ -77,6 +78,7 @@ test("rejects aggregate cost overflow", () => {
   const evaluation = evaluateCheck(input);
   assert.equal(evaluation.result, null);
   assert.match(evaluation.errors.calculation ?? "", /total costs are too large/);
+  assert.equal(evaluation.errors.calculationSource, "cost-total");
 });
 
 test("rejects a calculated remainder outside the safe-integer range", () => {
@@ -89,10 +91,42 @@ test("rejects a calculated remainder outside the safe-integer range", () => {
   const evaluation = evaluateCheck(input);
   assert.equal(evaluation.result, null);
   assert.match(evaluation.errors.calculation ?? "", /result is too large/);
+  assert.equal(evaluation.errors.calculationSource, "result");
 });
 
 test("invalid and incomplete entered values suppress every result", () => {
   assert.equal(evaluateCheck({ ...base, costs: [{ id: "a", name: "", amount: "5" }] }).result, null);
   assert.equal(evaluateCheck({ ...base, possibleExpenseAmount: "1.5" }).result, null);
   assert.equal(evaluateCheck({ ...base, possibleExpenseName: "Shoes" }).result, null);
+});
+
+test("a new cost previews current valid amounts and explains whether its amount is included", () => {
+  const input: CheckInput = {
+    ...base,
+    available: "200000",
+    costs: [
+      { id: "rent", name: "Rent", amount: "47000" },
+      { id: "draft", name: "", amount: "" },
+    ],
+  };
+  assert.equal(evaluateCheck(input).result, null);
+  assert.deepEqual(evaluateDraftPreview(input, "draft"), {
+    result: { available: 200000, commitments: 47000, beforeExpense: 153000, possibleExpense: null, afterExpense: null },
+    draftAmountIncluded: false,
+  });
+  assert.equal(evaluateDraftPreview({ ...input, costs: [input.costs[0], { ...input.costs[1], amount: "5000" }] }, "draft")?.result.beforeExpense, 148000);
+  assert.equal(evaluateDraftPreview({ ...input, costs: [input.costs[0], { ...input.costs[1], name: "Transport" }] }, "draft")?.result.beforeExpense, 153000);
+});
+
+test("draft preview never hides invalid amounts or treats an untouched list as zero costs", () => {
+  const draft = { id: "draft", name: "", amount: "" };
+  const input: CheckInput = { ...base, costs: [base.costs[0], draft] };
+  assert.equal(evaluateDraftPreview({ ...base, costs: [draft] }, "draft"), null);
+  assert.equal(evaluateDraftPreview({ ...input, costs: [base.costs[0], { ...draft, amount: "1.5" }] }, "draft"), null);
+  assert.equal(evaluateDraftPreview({ ...input, costs: [base.costs[0], { ...draft, amount: "0" }] }, "draft"), null);
+  assert.equal(evaluateDraftPreview({ ...input, available: "1.5" }, "draft"), null);
+  assert.equal(evaluateDraftPreview({ ...input, possibleExpenseAmount: "1.5" }, "draft"), null);
+  assert.equal(evaluateDraftPreview({ ...input, costs: [{ ...base.costs[0], amount: "" }, draft] }, "draft"), null);
+  assert.equal(evaluateDraftPreview({ ...input, costs: [base.costs[0], { ...draft, amount: String(Number.MAX_SAFE_INTEGER) }] }, "draft"), null);
+  assert.equal(evaluateDraftPreview({ ...input, costs: [base.costs[0], { ...draft, amount: "5000" }] }, null), null);
 });
